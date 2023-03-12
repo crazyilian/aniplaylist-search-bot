@@ -1,3 +1,4 @@
 aiohttp==3.8.3
+async_cache==1.1.1
 telethon==1.27.0
 validators==0.20.0
