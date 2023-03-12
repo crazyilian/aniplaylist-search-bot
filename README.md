@@ -5,5 +5,5 @@ Unofficial telegram bot for searching on AniPlaylist.com - [@aniplaylist_search_
 
 # Demo
 
-https://user-images.githubusercontent.com/34655948/224515403-f95f4957-6ed6-42e6-aeb0-85992298d598.mp4
+https://user-images.githubusercontent.com/34655948/224546242-0f6b51bb-ba69-414b-a468-61184f8fd7c4.mp4
 
