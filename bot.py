@@ -13,6 +13,7 @@ bot.parse_mode = 'html'
 session = aiohttp.ClientSession(headers={'Referer': 'https://aniplaylist.com/'})
 
 help_re = re.compile(r"^/(help|start)($|[\n @].*$)", re.DOTALL)
+empty_link_re = re.compile(r'<a href="(\S*?)">\u200b</a>')
 
 
 def is_help(text):
@@ -27,13 +28,16 @@ def is_search(text):
 async def callback(e):
     msg = await e.get_message()
 
-    url_text = msg.text.rsplit('\n', 1)[-1]
-    if not url_text.startswith('<a href="') or '">' not in url_text:
+    empty_links = list(re.finditer(empty_link_re, msg.text))
+    if len(empty_links) == 0:
         return
-    url = url_text.removeprefix('<a href="').split('">', 1)[0]
+    url = empty_links[-1].group(1)
+    if not url.endswith('#audio-preview'):
+        return
 
     data = {}
-    for line in msg.text.split('\n'):
+
+    for line in ''.join(re.split(empty_link_re, msg.text)[::2]).split('\n'):
         if ':' in line:
             key, val = line.split(':', 1)
             key = key.strip()
@@ -64,7 +68,7 @@ async def handler_search(e):
     song_type = result["song_type"] or "N/A"
     preview_link = result["preview_link"]
     answer = f"""
-<a href="{anime_link}">\u200b</a>
+<a href="{anime_link}">\u200b</a>\
 Title: <a href="{link}">{title}</a>
 Artists: {" & ".join(artists or ["N/A"])}
 Anime: <a href="{anime_link}">{anime_title}</a>
@@ -73,7 +77,7 @@ Type: {song_type}
     buttons = None
     if preview_link:
         buttons = [Button.inline('Audio preview')]
-        answer += f'\n<a href="{preview_link}">\u200b</a>'
+        answer += f'<a href="{preview_link}#audio-preview">\u200b</a>'
     await e.respond(answer, buttons=buttons)
 
 
