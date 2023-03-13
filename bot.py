@@ -92,7 +92,7 @@ async def callback_preview(e):
         return
     data = get_result_data(msg.text)
     answer = "Preview of\n"
-    answer += "\n".join(f"{key}: {data[key]}" for key in ("Title", "Anime") if data[key].removeprefix('N/A'))
+    answer += "\n".join(f"{key}: {data[key]}" for key in ("Title", "Anime", "Type") if data[key].removeprefix('N/A'))
     await e.respond(answer, file=url, supports_streaming=True)
 
 
