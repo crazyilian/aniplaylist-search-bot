@@ -6,6 +6,9 @@ from telethon.tl.custom import Button
 import re
 import urllib.parse
 from ButtonDataManager import ButtonDataManager
+import logging
+
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s', level=logging.INFO)
 
 bot = telethon.TelegramClient(
     'bot', int(os.getenv('API_ID')), os.getenv('API_HASH')
@@ -73,6 +76,7 @@ async def callback_change_hit(e):
     if not url:
         return
     query = decode_query(url)
+    logging.info(f"@{e.sender.username}: Change hit {repr(query)} index {n}")
     result = await get_search_result(query, n)
     answer = result['answer']
     buttons = result['buttons']
@@ -91,6 +95,7 @@ async def callback_preview(e):
     if not url:
         return
     data = get_result_data(msg.text)
+    logging.info(f"@{e.sender.username}: Audio preview of {repr(data.get('Title'))}")
     answer = "Preview of\n"
     answer += "\n".join(f"{key}: {data[key]}" for key in ("Title", "Anime", "Type") if data[key].removeprefix('N/A'))
     await e.respond(answer, file=url, supports_streaming=True)
@@ -159,6 +164,7 @@ Type: {song_type}
 
 @bot.on(telethon.events.NewMessage(func=lambda e: is_search(e.raw_text)))
 async def handler_search(e):
+    logging.info(f"@{e.sender.username}: Search {repr(e.raw_text)}")
     result = await get_search_result(e.raw_text, 0)
     answer = result['answer']
     buttons = result['buttons']
