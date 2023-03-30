@@ -15,7 +15,7 @@ class MalItemParser:
     @property
     def type_order(self):
         order = ('TV', 'Movie', 'OVA', 'Special', 'ONA', 'Music')
-        if self.media_type is None:
+        if self.media_type not in order:
             return len(order)
         return order.index(self.media_type)
 
