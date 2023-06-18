@@ -5,7 +5,7 @@ async def request_raw_mal(query, session):
     url = 'https://myanimelist.net/search/prefix.json'
     params = {
         'type': 'anime',
-        'keyword': query,
+        'keyword': query[:100],
         'v': 1
     }
     return await session.get(url, params=params)
