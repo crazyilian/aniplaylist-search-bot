@@ -7,7 +7,7 @@ class HitParser:
         self.episodes = self.raw.get('episodes', [])
         self.substitute = self.raw.get('substitute', {}).get('name', '')
         self.song_title = self.prefer_english(self.raw.get('titles'))
-        self.song_links = [l for l in self.raw.get('links', []) if l]
+        self.song_links = [l for l in self.raw.get('links', []) if l and l.get('link')]
         self.preview_link = self.raw.get('preview_url')
         self.artists = self.raw.get('artists', [])
 
