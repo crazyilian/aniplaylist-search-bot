@@ -17,7 +17,7 @@ async def request_mal_animes(query, session):
         return []
     data = await r.json()
     items = data.get('categories', [{}])[0].get('items', [])
-    itemps = [MalItemParser(item, query) for item in items]
+    itemps = [MalItemParser(item) for item in items]
     itemps.sort(key=lambda itemp: itemp.cmp_key)
     return [itemp.value for itemp in itemps]
 

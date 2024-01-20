@@ -1,11 +1,7 @@
-import difflib
-
-
 class MalItemParser:
-    def __init__(self, item, query):
+    def __init__(self, item):
         self.item = item
         self.name = self.item.get('name')
-        self.match = difflib.SequenceMatcher(None, self.name.lower(), query.lower()).ratio()
         payload = self.item.get('payload', {})
         self.media_type = payload.get('media_type')
         self.score = payload.get('score', 'N/A').strip()
@@ -29,10 +25,9 @@ class MalItemParser:
     @property
     def cmp_key(self):
         return (
-            -self.match,  # maximum actual match
+            -self.mal_match,  # maximum mal prefix match
             self.type_order,  # probably most popular
             -self.float_score,  # best score
-            -self.mal_match  # maximum mal prefix match
         )
 
     @property
@@ -41,5 +36,5 @@ class MalItemParser:
             'name': self.name,
             'url': self.url,
             'score': self.score,
-            'match': self.match
+            'match': self.mal_match
         }

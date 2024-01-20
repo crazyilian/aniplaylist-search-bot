@@ -4,7 +4,7 @@ from HitParser import HitParser
 from MalRequests import request_mal_anime
 
 HITS_PER_PAGE = 16
-MAL_MATCH_LIMIT = 0.7
+MAL_MATCH_LIMIT = 1
 
 
 def process_aniplaylist_query(q):
