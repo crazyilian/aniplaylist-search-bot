@@ -1,5 +1,9 @@
+import Levenshtein
+
+
 class MalItemParser:
-    def __init__(self, item):
+    def __init__(self, item, query):
+        self.query = query
         self.item = item
         self.name = self.item.get('name')
         payload = self.item.get('payload', {})
@@ -7,6 +11,7 @@ class MalItemParser:
         self.score = payload.get('score', 'N/A').strip()
         self.mal_match = self.item.get('es_score', 0)
         self.url = self.item.get('url')
+        self.levenshtein = Levenshtein.distance(self.name.lower(), self.query.lower())
 
     @property
     def type_order(self):
@@ -25,6 +30,7 @@ class MalItemParser:
     @property
     def cmp_key(self):
         return (
+            min(self.levenshtein, 2),
             -self.mal_match,  # maximum mal prefix match
             self.type_order,  # probably most popular
             -self.float_score,  # best score

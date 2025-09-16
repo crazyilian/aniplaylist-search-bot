@@ -1,6 +1,7 @@
 import aiohttp
 from cache import AsyncTTL
 import json
+import asyncio
 
 
 def async_ttl_cache(maxsize, ttl):
@@ -23,7 +24,7 @@ def async_ttl_cache(maxsize, ttl):
 
 class CachedSession:
     def __init__(self, headers):
-        self.session = aiohttp.ClientSession(headers=headers)
+        self.session = aiohttp.ClientSession(headers=headers, loop=asyncio.get_event_loop())
 
     @async_ttl_cache(maxsize=256, ttl=5 * 60)
     async def get(self, url, **kwargs):
