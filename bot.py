@@ -203,10 +203,6 @@ This is the unofficial search bot for AniPlaylist.com.
 👉 Help
 - To see this message again, send <code>/help</code>
 
-⚠️ Warning from Oct 2025
-Bot may run slowly due to limited access to MyAnimeList at the bot server's location.
-The issue will be fixed someday.
-
 Good searching!
 """.strip())
 
